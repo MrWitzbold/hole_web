@@ -1,3 +1,17 @@
+def delete_lines(file_path, start_index, end_index):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    if start_index < 0:
+        start_index = 0
+    if end_index >= len(lines):
+        end_index = len(lines) - 1
+
+    del lines[start_index:end_index + 1]
+
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
 def help():
     print("\ n\n================================================\n")
     print("help - get help")
@@ -48,11 +62,33 @@ def search_people(name):
             print(line)
             
 
-#def delete_person(name)
- #   person_list_file = open("data/person_list.hole", "r")
-  #  person_list = person_list_file.readlines()
-    #for line in person_list:
-    #    if()
+def delete_person(name):
+    print_line = False
+    person_count = 0
+    person_list = open("data/person_list.hole", "r").readlines()
+
+    index = 0
+    people_indexes = []
+    for line in person_list:
+        index += 1
+        if("NAME=" in line) and (name in line):
+            people_indexes.append(index-1)
+            person_count += 1
+            print(str(person_count) + ": ")
+            print_line = True
+        if("END") in line:
+            print_line = False
+            print("\n\n")
+        if print_line:
+            print(line)
+
+    person = input("\nWe counted " + str(person_count) + " people with that name, which one do you wanna delete from 1 to " + str(person_count) + "? ")
+
+    delete_lines("data/person_list.hole", people_indexes[int(person)-1]-1, people_indexes[int(person)-1]+9)
+
+    print("\nDeleted successfully\n")
+
+
 
 
 help()
@@ -61,8 +97,8 @@ while True:
     arg1 = ""
     arg2 = ""
     try:
-        arg1 = command.split(" ")[0]
-        arg2 = command.split(" ")[1]
+        arg1 = command.split(" ", 1)[0]
+        arg2 = command.split(" ", 1)[1]
     except Exception as e:
         print("")
     
@@ -74,6 +110,9 @@ while True:
 
     if(arg1 == "search_person"):
         search_people(arg2)
+
+    if(arg1 == "delete_person"):
+        delete_person(arg2)
 
 
 
