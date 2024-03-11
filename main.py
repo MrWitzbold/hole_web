@@ -59,7 +59,7 @@ def search_people(name):
             print("\n\n")
 
         if print_line == True:
-            print(line)
+            print(line.replace("\n", ""))
             
 
 def delete_person(name):
